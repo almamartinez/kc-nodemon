@@ -1,0 +1,14 @@
+{
+  "usuarios":[
+    {
+      "nombre":"alma",
+      "email":"alma.martinez@gmail.com",
+      "clave":"12345678"
+    } ,
+    {
+      "nombre":"prueba",
+      "email":"prueba@gmail.com",
+      "clave":"87654321"
+    }
+  ]
+}
