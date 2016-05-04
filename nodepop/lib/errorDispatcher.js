@@ -1,11 +1,13 @@
 "use strict";
+let Localize = require('localize');
 
+let myLocalize = new Localize('../config/');
 function errorSend(err, res) {
-    let errString = err.code;
+    err.message=err.message;
 
     return res.json({
         success:false,
-        error:errString
+        error:err
     });
 }
 

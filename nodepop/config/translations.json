@@ -1,0 +1,54 @@
+{
+  "Error en la validación de los campos": {
+    "es": "Error en la validación de los campos",
+    "en": "Fields validation error."
+  },
+  "Ese usuario ya existe en el sistema": {
+    "es": "Ese usuario ya existe en el sistema",
+    "en": "The user is already in the system"
+  },
+  "El usuario no existe en el sistema":{
+    "es": "El usuario no existe en el sistema",
+    "en": "The user is not in the system."
+  },
+  "Error de autenticación":{
+    "es": "Error de autenticación",
+    "en": "Authentication error"
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  },
+  "":{
+    "es": "",
+    "en": ""
+  }
+}

@@ -2,17 +2,11 @@
 let express = require('express');
 let router = express.Router();
 
-let mongoose = require('mongoose')
+let mongoose = require('mongoose');
 let AnuncioModel = mongoose.model('Advertisement');
-
+let errorSender = require('../../../lib/errorDispatcher');
 
 router.get('/',function (req, res){
-    /*Lista de anuncios paginada.
-    Con filtros por tag,
-    tipo de anuncio (venta o búsqueda),
-     rango de precio (precio min. y precio max.) y
-      nombre de artículo (que empiece por el dato buscado)
-*/
     let criteria ={};
     if (typeof req.query.nombre !== 'undefined'){
         criteria.nombre =  { $regex: /^req.query.nombre/i } ;
@@ -38,10 +32,7 @@ router.get('/',function (req, res){
     AnuncioModel.list(criteria,start,limit, sort, function (err, rows) {
         if (err){
             //Para devolver un status code distinto de 200, proque hay un error:
-            return res.status(401).json({
-                success:false,
-                error: err
-            });
+            return  errorSender(err,res);
         }
         res.json({success:true, rows:rows});
     });
@@ -50,10 +41,7 @@ router.get('/',function (req, res){
 router.get('/tags',function (req, res){
     AnuncioModel.listTags(function(err,rows){
         if (err){
-            return res.status(401).json({
-                success:false,
-                error:err
-            });
+            return  errorSender(err,res);
         }
         res.json({success:true, rows:rows});
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,6 +9,8 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+let Localize = require('localize');
+let localize = new Localize('./config/');
 
 var app = express();
 //requerimos la conexion a la bbdd con mongoose.
@@ -22,6 +26,13 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+app.use(function(req, res, next) {
+  var lang = req.session.lang || "en";
+
+  localize.setLocale(lang);
+  next();
+});
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,6 +41,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+
 
 //RUTAS del API de prueba de mongoose:
 app.use('/api/v1/anuncios', require('./routes/api/v1/anuncios'));

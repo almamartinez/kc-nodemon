@@ -10,36 +10,26 @@ let errorSender = require('../../../lib/errorDispatcher');
 
 router.post('/', function (req, res) {
     let usuario = new UserModel(req.body);
-    console.log(usuario);
+    //console.log(usuario);
     //Validamos el esquema
     let errors = usuario.validateSync();
     if (errors){
-        console.log('errors',errors);
-        res.status(401);
-        return errorSender({code:'VALIDATION_ERROR', err:errors}, res);
+        //console.log('errors',errors);
+        return errorSender(new Error('Error en la validación de los campos'), res.status(401));
 
     }
     //Comprobamos que no exista ya ese usuario (email)
     UserModel.findOne({email: usuario.email}).exec(function (err, user){
         if(err){
-            return res.status(401).json({
-                success:false,
-                error: err
-            });
+            return errorSender(err, res.status(500));
         }
         if (user){
-            return res.status(401).json({
-                success:false,
-                error: 'USER_EXISTS'
-            });
+            return errorSender(new Error('Ese usuario ya existe en el sistema'),res.status(401));
         }
         usuario.clave = sha256.x2(usuario.clave);
         usuario.save(function(err, saved){
             if (err){
-                return res.status(401).json({
-                    success:false,
-                    error: err
-                });
+                return errorSender(err, res.status(500));
             }
             return res.json({success:true, saved: saved});
         });
@@ -52,14 +42,14 @@ router.post('/login', function (req, res) {
 
     UserModel.findOne({email:email}).exec(function (err, user) {
         if (err){
-            return res.status(500).json({success: false, error:err});
+            return errorSender(err, res.status(500));
         }
         if (!user){
-            return res.status(401).json({success: false, error:'USER_NOT_EXIST'});
+            return errorSender(new Error('El usuario no existe en el sistema'),res.status(401));
         }
 
         if (user.clave !== clave){
-            return res.status(401).json({success: false, error:'AUTHENTICATE_FAILED'});
+            return errorSender(new Error('Error de autenticación'),res.status(403));
         }
 
         //Usuario valido
