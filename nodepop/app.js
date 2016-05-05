@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-let Localize = require('localize');
-let localize = new Localize('./config/');
+
+
 
 var app = express();
 //requerimos la conexion a la bbdd con mongoose.
@@ -24,27 +24,31 @@ require('./models/User');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.use(function(req, res, next) {
-  var lang = req.session.lang || "en";
 
-  localize.setLocale(lang);
-  next();
-});
+
+
+
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Para sevir las fotos en http://server/images/anuncios/
+app.use('/images/anuncios',express.static( path.join(__dirname, 'public/images') ) );
+
 app.use('/', routes);
 app.use('/users', users);
 
 
 
-//RUTAS del API de prueba de mongoose:
+//RUTAS del API:
+
 app.use('/api/v1/anuncios', require('./routes/api/v1/anuncios'));
 app.use('/api/v1/usuarios', require('./routes/api/v1/usuarios'));
 app.use('/api/v1/pushtoken', require('./routes/api/v1/pushtoken'));

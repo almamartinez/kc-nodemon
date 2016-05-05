@@ -15,13 +15,13 @@
     "es": "Error de autenticación",
     "en": "Authentication error"
   },
-  "":{
-    "es": "",
-    "en": ""
+  "user_exists":{
+    "es": "Ese usuario ya existe en el sistema",
+    "en": "The user is already in the system"
   },
-  "":{
-    "es": "",
-    "en": ""
+  "Autenticación necesaria":{
+    "es": "Autenticación necesaria",
+    "en": "Authentication is needed"
   },
   "":{
     "es": "",

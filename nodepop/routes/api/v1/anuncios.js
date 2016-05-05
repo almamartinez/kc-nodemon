@@ -5,8 +5,11 @@ let router = express.Router();
 let mongoose = require('mongoose');
 let AnuncioModel = mongoose.model('Advertisement');
 let errorSender = require('../../../lib/errorDispatcher');
+var jwtAuth = require('../../../lib/jwtAuth');
 
-router.get('/',function (req, res){
+router.use(jwtAuth());
+
+router.get('/:lang?/',function (req, res){
     let criteria ={};
     if (typeof req.query.nombre !== 'undefined'){
         criteria.nombre =  { $regex: /^req.query.nombre/i } ;
@@ -32,16 +35,16 @@ router.get('/',function (req, res){
     AnuncioModel.list(criteria,start,limit, sort, function (err, rows) {
         if (err){
             //Para devolver un status code distinto de 200, proque hay un error:
-            return  errorSender(err,res);
+            return  errorSender(err,req.params.lang,res);
         }
         res.json({success:true, rows:rows});
     });
 });
 
-router.get('/tags',function (req, res){
+router.get('/:lang?/tags',function (req, res){
     AnuncioModel.listTags(function(err,rows){
         if (err){
-            return  errorSender(err,res);
+            return  errorSender(err,req.params.lang,res);
         }
         res.json({success:true, rows:rows});
 

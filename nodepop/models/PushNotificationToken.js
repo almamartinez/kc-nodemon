@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 //Creamos el esquema
 var pushNotificationTokenSchema = mongoose.Schema({
-    plataforma: {type: String, enum: ['ios', 'android']},
+    plataforma: {required:true, type: String, enum: ['ios', 'android']},
     token: String,
     usuario: String
 
