@@ -12,23 +12,22 @@ router.post('/:lang?/', function (req, res) {
     //Validamos el esquema
     let errors = pushToken.validateSync();
     if (errors){
-        console.log('errors',errors);
         res.status(401);
-        return errorSender(new Error('Error en la validación de los campos'),req.params.lang, res);
+        return errorSender({code:'Error en la validación de los campos',error:errors},req.params.lang, res);
 
     }
     if(typeof pushToken.usuario !== 'undefined'){
         //Comprobamos que si nos envían un usuario, éste exista. Si no, error.
         UserModel.findOne({_id: pushToken.usuario}).exec(function (err, user){
             if(err){
-                return errorSender(err,req.params.lang, res.status(500));
+                return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
             }
             if (!user){
-                return errorSender(new Error('El usuario no existe en el sistema'),req.params.lang,res.status(401));
+                return errorSender({code:'El usuario no existe en el sistema'},req.params.lang,res.status(401));
             }
             pushToken.save(function(err, saved){
                 if (err){
-                    return errorSender(err,req.params.lang, res.status(500));
+                    return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
                 }
                 return res.json({success:true, saved: saved});
             });
@@ -36,7 +35,7 @@ router.post('/:lang?/', function (req, res) {
     }else{
         pushToken.save(function(err, saved){
             if (err){
-                return errorSender(err,req.params.lang, res.status(500));
+                return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
             }
             return res.json({success:true, saved: saved});
         });

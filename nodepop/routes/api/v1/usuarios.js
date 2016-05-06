@@ -1,5 +1,4 @@
 "use strict";
-
 var express = require('express');
 var router = express.Router();
 let mongoose = require('mongoose')
@@ -17,16 +16,16 @@ router.post('/:lang/', function (req, res) {
     let errors = usuario.validateSync();
     if (errors){
         //console.log('errors',errors);
-        return errorSender(errors,req.params.lang, res.status(401));
+        return errorSender({code:'Error en la validación de los campos', error:errors},req.params.lang, res.status(401));
 
     }
     //Comprobamos que no exista ya ese usuario (email)
     UserModel.findOne({email: usuario.email}).exec(function (err, user){
         if(err){
-            return errorSender(err,req.params.lang, res.status(500));
+            return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
         }
         if (user){
-            return errorSender({message:'Ese usuario ya existe en el sistema'},req.params.lang,res.status(401));
+            return errorSender({code:'Ese usuario ya existe en el sistema'},req.params.lang,res.status(401));
         }
         usuario.clave = sha256.x2(usuario.clave);
         usuario.save(function(err, saved){
@@ -44,14 +43,14 @@ router.post('/:lang/login', function (req, res) {
 
     UserModel.findOne({email:email}).exec(function (err, user) {
         if (err){
-            return errorSender(err,req.params.lang, res.status(500));
+            return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
         }
         if (!user){
-            return errorSender(new Error('El usuario no existe en el sistema'),req.params.lang,res.status(401));
+            return errorSender({code:'El usuario no existe en el sistema'},req.params.lang,res.status(401));
         }
 
         if (user.clave !== clave){
-            return errorSender(new Error('Error de autenticación'),req.params.lang,res.status(403));
+            return errorSender({code:'Error de autenticación'},req.params.lang,res.status(403));
         }
 
         //Usuario valido

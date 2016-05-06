@@ -15,9 +15,9 @@
     "es": "Error de autenticación",
     "en": "Authentication error"
   },
-  "user_exists":{
-    "es": "Ese usuario ya existe en el sistema",
-    "en": "The user is already in the system"
+  "Error en el servidor":{
+    "es": "Error en el servidor",
+    "en": "Server error"
   },
   "Autenticación necesaria":{
     "es": "Autenticación necesaria",

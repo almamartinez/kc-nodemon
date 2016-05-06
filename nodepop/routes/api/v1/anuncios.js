@@ -34,8 +34,7 @@ router.get('/:lang?/',function (req, res){
 
     AnuncioModel.list(criteria,start,limit, sort, function (err, rows) {
         if (err){
-            //Para devolver un status code distinto de 200, proque hay un error:
-            return  errorSender(err,req.params.lang,res);
+            return  errorSender({code:'Error en el servidor', error:err},req.params.lang,res.status(500));
         }
         res.json({success:true, rows:rows});
     });
@@ -44,7 +43,7 @@ router.get('/:lang?/',function (req, res){
 router.get('/:lang?/tags',function (req, res){
     AnuncioModel.listTags(function(err,rows){
         if (err){
-            return  errorSender(err,req.params.lang,res);
+            return  errorSender({code:'Error en el servidor', error:err},req.params.lang,res.status(500));
         }
         res.json({success:true, rows:rows});
 

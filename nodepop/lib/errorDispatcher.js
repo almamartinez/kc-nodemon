@@ -5,14 +5,18 @@ var fs=require('fs');
 var path =require('path');
 let config = require('../config/translations');
 
-//let localize = new Localize('./config/');
-console.log(config);
+
 
 function errorSend(err, lang, res) {
-//    console.log(err,lang,localize, localize.translate(err.message));
-   // localize.setLocale('en');
-//    err.message = localize.translate(err.message);
 
+    if (err.code) {
+        //Primero me aseguro de que siempre devuelva un mensaje
+        err.message=err.code;
+        let elem = config[err.code];
+        if (elem) {
+            err.message = elem[lang];
+        }
+    }
     return res.json({
         success:false,
         error:err
