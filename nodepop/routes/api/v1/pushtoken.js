@@ -7,6 +7,25 @@ let PushTokenModel = mongoose.model('PushNotificationToken');
 let UserModel = mongoose.model('User');
 let errorSender  = require('../../../lib/errorDispatcher');
 
+/**
+ * @api {post} /pushtoken/:lang Registra un token para envío de notificaciones Push
+ * @apiName PostPushToken
+ * @apiVersion 1.0.0
+ * @apiGroup PushToken
+ *
+ * @apiParam {string} lang Idioma en el que queremos que devuelva los errores
+ * @apiParam {string="android","ios"} plataforma Plataforma del dispositivo que generó el token.
+ * @apiParam {string} token Token al que enviar las notificaciones Push
+ * @apiParam {string} [usuario] identificador del usuario registrado asociado al token.
+ *
+ *
+ * @apiSuccess {Object} tokenPush objeto que ha guardado el sistema
+ *
+ *
+ * @apiError UserNotFound Ese usuario no existe en el sistema.
+ * @apiError ErrorValidation Error en la validación de los campos.
+ *
+ */
 router.post('/:lang?/', function (req, res) {
     let pushToken = new PushTokenModel(req.body);
     //Validamos el esquema
@@ -23,7 +42,7 @@ router.post('/:lang?/', function (req, res) {
                 return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
             }
             if (!user){
-                return errorSender({code:'El usuario no existe en el sistema'},req.params.lang,res.status(401));
+                return errorSender({code:'El usuario no existe en el sistema'},req.params.lang,res.status(400));
             }
             pushToken.save(function(err, saved){
                 if (err){

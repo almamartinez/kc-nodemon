@@ -39,7 +39,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Para sevir las fotos en http://server/images/anuncios/
+//Para servir la documentación del API
+app.use('/doc',express.static('doc', {'index': ['index.html']}));
+
+//Para servir las fotos en http://server/images/anuncios/
 app.use('/images/anuncios',express.static( path.join(__dirname, 'public/images') ) );
 
 app.use('/', routes);

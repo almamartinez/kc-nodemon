@@ -1,0 +1,15 @@
+{
+  "name": "nodemon",
+  "version": "1.0.0",
+  "description": "API para el mantenimiento de una web de anuncios de productos de segunda mano disponibles para la venta o que los usuarios buscan.",
+  "title": "apiDoc para nodemon",
+  "url" : "http://localhost:3000/api/v1",
+  "order": [
+    "GetUser",
+    "PostUser"
+  ],
+  "template": {
+  	"withCompare": true,
+  	"withGenerator": true
+  }
+}
