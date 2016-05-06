@@ -5,8 +5,6 @@ var fs=require('fs');
 var path =require('path');
 let config = require('../config/translations');
 
-
-
 function errorSend(err, lang, res) {
 
     if (err.code) {
