@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 require('./connectMongoose');
 require('../models/Advertisement');
 require('../models/User');
@@ -33,7 +33,7 @@ async.series([ function(callback){
                 });
             },callback);
         });
-    })},
+    });},
     function(callback){
         User.deleteAll(function(error){
             if (error){
@@ -58,7 +58,7 @@ async.series([ function(callback){
                 },
                 callback);
             });
-        })
+        });
     }
     ],
     function (err, results) {

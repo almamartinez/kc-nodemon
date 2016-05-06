@@ -1,4 +1,4 @@
-
+'use strict';
 //Exportamos la configuracion q necesitemos
 module.exports = {
     jwt: {

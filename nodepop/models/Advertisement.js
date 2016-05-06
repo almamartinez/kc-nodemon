@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 let mongoose = require('mongoose');
 
 //Creamos el esquema
@@ -23,7 +23,7 @@ let advertSchema = mongoose.Schema({
 
 advertSchema.statics.deleteAll= function (callback) {
         Advertisement.remove({}, function (err) {
-        console.log('borrando anuncios...')
+        //console.log('borrando anuncios...');
         if (err) return callback(err);
         callback(null);
     });
@@ -43,7 +43,7 @@ advertSchema.statics.list = function (filter, start,limit, sort, cb){
 advertSchema.statics.listTags = function (callback){
     let query = Advertisement.distinct('tags');
     return query.exec(callback);
-}
+};
 //Lo asignamos al modelo. OJO! mongoose lo pone en minusculas y en plural cuando crea la Collection
 var Advertisement = mongoose.model('Advertisement', advertSchema);
 

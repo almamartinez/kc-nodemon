@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var fs = require('fs');
 var onError= function (err,msg){
         if (err){
@@ -17,9 +17,9 @@ var leerJson= function (fichero, callback) {
         if(err){
             return callback(err);            
         }
-        //parsear el fichero
+        let lista='';
         try{
-            var lista = JSON.parse(data);
+            lista = JSON.parse(data);
         }catch (e) {
             console.log(e);
             return callback('No se pudo entender el formato del fichero ' + fichero);
@@ -29,7 +29,7 @@ var leerJson= function (fichero, callback) {
         return callback(null,lista);
         
     });
-}
+};
 
 module.exports.onError=onError;
 module.exports.loadData=leerJson;

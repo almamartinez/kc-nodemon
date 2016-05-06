@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose')
+let mongoose = require('mongoose');
 let UserModel = mongoose.model('User');
 var jwt = require('jsonwebtoken');
 let sha256 = require('sha256');
@@ -59,7 +59,7 @@ router.post('/:lang/login', function (req, res) {
         });
 
         res.json({success:true, token:token});
-    })
+    });
 
 });
 

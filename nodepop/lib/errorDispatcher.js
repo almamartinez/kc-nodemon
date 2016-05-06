@@ -1,8 +1,5 @@
-"use strict";
-let Localize = require('localize');
-//cargar librerías
-var fs=require('fs');
-var path =require('path');
+'use strict';
+
 let config = require('../config/translations');
 
 function errorSend(err, lang, res) {

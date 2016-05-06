@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 let mongoose = require('mongoose');
 
 //Creamos el esquema
@@ -20,7 +20,7 @@ let userSchema = mongoose.Schema({
 
 userSchema.statics.deleteAll= function (callback) {
     UserModel.remove({}, function (err) {
-        console.log('borrando usuarios...')
+        console.log('borrando usuarios...');
         if (err) return callback(err);
         callback(null,'All Users deleted');
     });
