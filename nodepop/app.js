@@ -30,7 +30,10 @@ app.set('view engine', 'ejs');
 
 
 
-
+app.use((req, res, next) => {
+  req.lang = req.get('x-lang') || 'es';
+  next();
+});
 
 
 app.use(logger('dev'));

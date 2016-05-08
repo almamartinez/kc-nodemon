@@ -8,12 +8,11 @@ let UserModel = mongoose.model('User');
 let errorSender  = require('../../../lib/errorDispatcher');
 
 /**
- * @api {post} /pushtoken/:lang Registra un token para envío de notificaciones Push
+ * @api {post} /pushtoken/ Registra un token para envío de notificaciones Push
  * @apiName PostPushToken
- * @apiVersion 1.0.0
+ * @apiVersion 1.0.1
  * @apiGroup PushToken
  *
- * @apiParam {string} lang Idioma en el que queremos que devuelva los errores
  * @apiParam {string="android","ios"} plataforma Plataforma del dispositivo que generó el token.
  * @apiParam {string} token Token al que enviar las notificaciones Push
  * @apiParam {string} [usuario] identificador del usuario registrado asociado al token.
@@ -26,27 +25,27 @@ let errorSender  = require('../../../lib/errorDispatcher');
  * @apiError ErrorValidation Error en la validación de los campos.
  *
  */
-router.post('/:lang?/', function (req, res) {
+router.post('/', function (req, res) {
     let pushToken = new PushTokenModel(req.body);
     //Validamos el esquema
     let errors = pushToken.validateSync();
     if (errors){
         res.status(401);
-        return errorSender({code:'Error en la validación de los campos',error:errors},req.params.lang, res);
+        return errorSender({code:'ErrorValidation',error:errors},req.lang, res);
 
     }
     if(typeof pushToken.usuario !== 'undefined'){
         //Comprobamos que si nos envían un usuario, éste exista. Si no, error.
         UserModel.findOne({_id: pushToken.usuario}).exec(function (err, user){
             if(err){
-                return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
+                return errorSender({code:'Error en el servidor', error:err},req.lang, res.status(500));
             }
             if (!user){
-                return errorSender({code:'El usuario no existe en el sistema'},req.params.lang,res.status(400));
+                return errorSender({code:'El usuario no existe en el sistema'},req.lang,res.status(400));
             }
             pushToken.save(function(err, saved){
                 if (err){
-                    return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
+                    return errorSender({code:'Error en el servidor', error:err},req.lang, res.status(500));
                 }
                 return res.json({success:true, saved: saved});
             });
@@ -54,7 +53,7 @@ router.post('/:lang?/', function (req, res) {
     }else{
         pushToken.save(function(err, saved){
             if (err){
-                return errorSender({code:'Error en el servidor', error:err},req.params.lang, res.status(500));
+                return errorSender({code:'ServerError', error:err},req.lang, res.status(500));
             }
             return res.json({success:true, saved: saved});
         });

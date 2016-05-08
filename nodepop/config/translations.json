@@ -1,25 +1,25 @@
 {
-  "Error en la validación de los campos": {
+  "ErrorValidation": {
     "es": "Error en la validación de los campos",
     "en": "Fields validation error."
   },
-  "Ese usuario ya existe en el sistema": {
+  "ErrorUserExists": {
     "es": "Ese usuario ya existe en el sistema",
     "en": "The user is already in the system"
   },
-  "El usuario no existe en el sistema":{
+  "ErrorUserNotFound":{
     "es": "El usuario no existe en el sistema",
     "en": "The user is not in the system."
   },
-  "Error de autenticación":{
+  "AuthenticationError":{
     "es": "Error de autenticación",
     "en": "Authentication error"
   },
-  "Error en el servidor":{
+  "ServerError":{
     "es": "Error en el servidor",
     "en": "Server error"
   },
-  "Autenticación necesaria":{
+  "ErrorNeedAuthentication":{
     "es": "Autenticación necesaria",
     "en": "Authentication is needed"
   },

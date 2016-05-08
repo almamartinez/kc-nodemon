@@ -24,18 +24,18 @@ module.exports = function() {
             // verifies secret and checks exp
             jwt.verify(token, configJWT.secret, function(err, decoded) {
                 if (err) {
-                    return errorSender( {message: 'Error de autenticación'},req.params.lang,res.status(401)); 
+                    return errorSender( {message: 'AuthenticationError'},req.params.lang,res.status(401)); 
                     //res.json({ ok: false, error: {code: 401, message: 'Failed to authenticate token.'}});
                 } else {
                     // if everything is good, save to request for use in other routes
                     req.decoded = decoded;
-                    console.log('decoded: ', decoded);
+                    //console.log('decoded: ', decoded);
                     next();
                 }
             });
         } else {
             // if there is no token return error
-            return errorSender( {message: 'Autenticación necesaria'},req.params.lang,res.status(403));
+            return errorSender( {message: 'ErrorNeedAuthentication'},req.params.lang,res.status(403));
             //res.status(403).json({ok: false,error: { code: 403, message: 'No token provided.'}});
         }
     };

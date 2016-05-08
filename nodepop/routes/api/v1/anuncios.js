@@ -10,9 +10,9 @@ var jwtAuth = require('../../../lib/jwtAuth');
 router.use(jwtAuth());
 
 /**
- * @api {get} /anuncios/:lang Listado de anuncios filtrados por los parámetros de entrada y paginados.
+ * @api {get} /anuncios/ Listado de anuncios filtrados por los parámetros de entrada y paginados.
  * @apiName GetAnuncios
- * @apiVersion 1.0.0
+ * @apiVersion 1.0.1
  * @apiGroup Anuncios
  *
  * @apiParam {string} token Token de autenticación que se devolvió en el login
@@ -24,6 +24,7 @@ router.use(jwtAuth());
  * @apiParam {int} start a partir de qué resultado enviar
  * @apiParam {int} limit número de resultados a enviar
  * @apiParam {int} sort campo por el que ordenar. - delante ordena decreciente.
+ * @apiParam {boolean} includeTotal Si true devuelve el total de anuncios disponibles
  *
  * @apiSuccess {Object} Objeto con un array de anuncios disponibles.
  *
@@ -32,7 +33,7 @@ router.use(jwtAuth());
  *
  *
  */
-router.get('/:lang?/',function (req, res){
+router.get('/',function (req, res){
     let criteria ={};
     if (typeof req.query.nombre !== 'undefined'){
         criteria.nombre =  { $regex: /^req.query.nombre/i } ;
@@ -50,23 +51,34 @@ router.get('/:lang?/',function (req, res){
     }else {
         criteria.precio = { $gte:precioMin } ;
     }
-
+    let total = req.query.includeTotal || false;
     let start = parseInt(req.query.start) || 0;
     let limit = parseInt(req.query.limit) || null;
     let sort = req.query.sort || null;
 
+
     AnuncioModel.list(criteria,start,limit, sort, function (err, rows) {
         if (err){
-            return  errorSender({code:'Error en el servidor', error:err},req.params.lang,res.status(500));
+            return  errorSender({code:'ServerError', error:err},req.lang,res.status(500));
         }
-        res.json({success:true, rows});
+
+        if (total){
+            AnuncioModel.count(function (err, count) {
+                if (err){
+                    return  errorSender({code:'ServerError', error:err},req.lang,res.status(500));
+                }
+                return res.json({success:true, result:{total:count,rows:rows}})
+            });
+        }else {
+            return res.json({success: true, result: {rows: rows}});
+        }
     });
 });
 
 /**
- * @api {get} /anuncios/:lang/tags Listado de los tags disponibles
+ * @api {get} /anuncios/tags Listado de los tags disponibles
  * @apiName GetTags
- * @apiVersion 1.0.0
+ * @apiVersion 1.0.1
  * @apiGroup Anuncios
  *
  * @apiParam {string} token Token de autenticación que se devolvió en el login
@@ -78,10 +90,10 @@ router.get('/:lang?/',function (req, res){
  *
  *
  */
-router.get('/:lang?/tags',function (req, res){
+router.get('/tags',function (req, res){
     AnuncioModel.listTags(function(err,rows){
         if (err){
-            return  errorSender({code:'Error en el servidor', error:err},req.params.lang,res.status(500));
+            return  errorSender({code:'ServerError', error:err},req.lang,res.status(500));
         }
         res.json({success:true, rows:rows});
 

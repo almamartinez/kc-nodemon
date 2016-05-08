@@ -28,8 +28,16 @@ advertSchema.statics.deleteAll= function (callback) {
         callback(null);
     });
 };
+
+advertSchema.statics.count = function (cb){
+
+    let query = Advertisement.find().count();
+
+    return query.exec(cb);
+};
+
 advertSchema.statics.list = function (filter, start,limit, sort, cb){
-    
+
     let query = Advertisement.find(filter);
     //como no le pusimos el exec, podemos poner mas cosas a la query
     query.skip(start);
